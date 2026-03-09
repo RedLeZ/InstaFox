@@ -1,0 +1,44 @@
+# InstaFox - Firefox Extension
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Build files
+dist/
+build/
+*.zip
+*.xpi
+
+# Node modules (if you add build tools later)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temp files
+tmp/
+temp/
+.cache/
+
+# Test files
+test-images/
+test-videos/
+*.har
+
+# Environment files
+.env
+.env.local
+
+# Firefox specific
+web-ext-artifacts/

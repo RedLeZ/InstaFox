@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InstaFox</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 350px;
+      min-height: 400px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: white;
+      color: #262626;
+    }
+
+    .header {
+      padding: 20px;
+      background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+      color: white;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .content {
+      padding: 20px;
+    }
+
+    .section {
+      margin-bottom: 20px;
+    }
+
+    .section h2 {
+      font-size: 16px;
+      margin-bottom: 12px;
+      color: #262626;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: #fafafa;
+      padding: 16px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: #e1306c;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #8e8e8e;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .button {
+      width: 100%;
+      padding: 12px;
+      background: #0095f6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-bottom: 8px;
+    }
+
+    .button:hover {
+      background: #0081db;
+    }
+
+    .button.secondary {
+      background: white;
+      color: #262626;
+      border: 1px solid #dbdbdb;
+    }
+
+    .button.secondary:hover {
+      background: #fafafa;
+    }
+
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #dbdbdb;
+    }
+
+    .link {
+      color: #0095f6;
+      text-decoration: none;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .link:hover {
+      text-decoration: underline;
+    }
+
+    .status {
+      padding: 12px;
+      background: #d4edda;
+      color: #155724;
+      border-radius: 8px;
+      font-size: 13px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .status.inactive {
+      background: #fff3cd;
+      color: #856404;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🦊 InstaFox</h1>
+    <p>Enhanced Instagram for Desktop</p>
+  </div>
+
+  <div class="content">
+    <div class="status" id="status">
+      ✓ Extension active on Instagram
+    </div>
+
+    <div class="section">
+      <h2>Quick Stats</h2>
+      <div class="stats">
+        <div class="stat-card">
+          <div class="stat-value" id="total-stories">0</div>
+          <div class="stat-label">Stories</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="total-posts">0</div>
+          <div class="stat-label">Posts</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Quick Actions</h2>
+      <button class="button" id="view-drafts-btn">View Drafts</button>
+      <button class="button" id="view-scheduled-btn">View Scheduled</button>
+      <button class="button" id="view-analytics-btn">View Analytics</button>
+    </div>
+
+    <div class="links">
+      <a href="#" class="link" id="open-instagram">📷 Open Instagram</a>
+      <a href="#" class="link" id="settings-link">⚙️ Settings</a>
+      <a href="#" class="link" id="help-link">❓ Help & Documentation</a>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
