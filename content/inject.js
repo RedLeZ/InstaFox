@@ -377,9 +377,16 @@ function setupModalEventListeners(modal, type) {
     return;
   }
   
-  saveDraftBtn.addEventListener('click', () => saveDraft(fileInput.files, captionInput.value, type));
-  scheduleBtn.addEventListener('click', () => schedulePost(fileInput.files, captionInput.value, type));
-  postBtn.addEventListener('click', () => publishContent(fileInput.files, captionInput.value, type));
+  // Use { once: true } to ensure handlers only fire once
+  saveDraftBtn.addEventListener('click', () => saveDraft(fileInput.files, captionInput.value, type), { once: false });
+  scheduleBtn.addEventListener('click', () => schedulePost(fileInput.files, captionInput.value, type), { once: false });
+  
+  // Post button should only fire once per modal
+  postBtn.addEventListener('click', () => {
+    // Immediately disable button to prevent double-clicks
+    postBtn.disabled = true;
+    publishContent(fileInput.files, captionInput.value, type);
+  }, { once: true });
 }
 
 /**
@@ -481,8 +488,30 @@ async function schedulePost(files, caption, type) {
 /**
  * Publish content
  */
+let isUploading = false; // Flag to prevent duplicate uploads
+let uploadCallCount = 0; // Track how many times this is called
+
 async function publishContent(files, caption, type) {
-  console.log(`Publishing ${type}...`);
+  uploadCallCount++;
+  console.log(`📊 publishContent called (call #${uploadCallCount})`, new Error().stack);
+  
+  // Prevent duplicate uploads
+  if (isUploading) {
+    console.warn(`⚠️ Upload already in progress, ignoring duplicate request (call #${uploadCallCount})`);
+    return;
+  }
+  
+  isUploading = true;
+  console.log(`Publishing ${type}... (call #${uploadCallCount})`);
+  
+  // Disable the button to prevent multiple clicks
+  const postBtn = document.querySelector(`#${type === 'story' ? 'post-story-btn' : 'post-btn'}`);
+  if (postBtn) {
+    postBtn.disabled = true;
+    postBtn.textContent = 'Uploading...';
+    postBtn.style.opacity = '0.6';
+    postBtn.style.cursor = 'not-allowed';
+  }
   
   // Debug: inspect what's available on the page
   console.log('🔍 Inspecting Instagram page data...');
@@ -504,10 +533,28 @@ async function publishContent(files, caption, type) {
       document.getElementById('instafox-modal').remove();
     } else {
       alert(`Failed to publish: ${result.error || 'Unknown error'}`);
+      
+      // Re-enable button on failure
+      if (postBtn) {
+        postBtn.disabled = false;
+        postBtn.textContent = type === 'story' ? 'Post Story' : 'Post';
+        postBtn.style.opacity = '1';
+        postBtn.style.cursor = 'pointer';
+      }
     }
   } catch (error) {
     console.error('Publish error:', error);
     alert('Failed to publish');
+    
+    // Re-enable button on error
+    if (postBtn) {
+      postBtn.disabled = false;
+      postBtn.textContent = type === 'story' ? 'Post Story' : 'Post';
+      postBtn.style.opacity = '1';
+      postBtn.style.cursor = 'pointer';
+    }
+  } finally {
+    isUploading = false;
   }
 }
 
@@ -835,6 +882,16 @@ const InstagramAPI = {
   },
 
   async uploadStory(file, caption = '') {
+    // Prevent duplicate uploads
+    if (this._isUploadingStory) {
+      console.warn('⚠️ Story upload already in progress, blocking duplicate request');
+      return {
+        success: false,
+        error: 'Upload already in progress'
+      };
+    }
+    
+    this._isUploadingStory = true;
     console.log('InstagramAPI.uploadStory executing...', { file, caption });
     
     try {
@@ -1218,6 +1275,10 @@ const InstagramAPI = {
         success: false,
         error: error.message
       };
+    } finally {
+      // Reset upload flag
+      this._isUploadingStory = false;
+      console.log('🔓 Story upload flag reset');
     }
   },
 
