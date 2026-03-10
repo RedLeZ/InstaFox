@@ -1,36 +1,48 @@
 /**
- * InstaFox Styles
- * Styles for injected UI elements
+ * InstaFox Styles - Modern Dark Theme
+ * Color Palette: #080f0f (dark), #7e8287 (gray), #9da39a (sage), #ff7f11 (orange), #ff1b1c (red)
  */
+
+:root {
+  --ifox-dark: #080f0f;
+  --ifox-gray: #7e8287;
+  --ifox-sage: #9da39a;
+  --ifox-orange: #ff7f11;
+  --ifox-red: #ff1b1c;
+  --ifox-dark-lighter: #111819;
+  --ifox-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
 /* Floating Button */
 .instafox-floating-btn {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-  border: none;
+  background: var(--ifox-orange);
+  border: 3px solid var(--ifox-dark);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(255, 127, 17, 0.4);
+  transition: var(--ifox-transition);
   color: white;
 }
 
 .instafox-floating-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(255, 127, 17, 0.5);
+  background: #ff8c2e;
 }
 
 .instafox-floating-btn.active {
   transform: rotate(45deg);
-  background: linear-gradient(45deg, #bc1888 0%, #cc2366 25%, #dc2743 50%, #e6683c 75%, #f09433 100%);
+  background: var(--ifox-red);
+  box-shadow: 0 6px 20px rgba(255, 27, 28, 0.5);
 }
 
 .instafox-floating-btn svg {
-  transition: transform 0.3s ease;
+  transition: var(--ifox-transition);
 }
 
 /* Menu */
@@ -38,12 +50,13 @@
   position: absolute;
   top: 70px;
   right: 0;
-  background: white;
+  background: var(--ifox-dark);
+  border: 2px solid var(--ifox-gray);
   border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   overflow: hidden;
   min-width: 200px;
-  animation: slideDown 0.2s ease;
+  animation: slideDown 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes slideDown {
@@ -63,22 +76,25 @@
   gap: 12px;
   padding: 14px 18px;
   cursor: pointer;
-  transition: background 0.2s ease;
-  color: #262626;
+  transition: var(--ifox-transition);
+  color: var(--ifox-sage);
   font-size: 15px;
   font-weight: 500;
 }
 
 .instafox-menu-item:hover {
-  background: linear-gradient(90deg, rgba(240, 148, 51, 0.1) 0%, rgba(188, 24, 136, 0.1) 100%);
+  background: var(--ifox-dark-lighter);
+  color: white;
+  padding-left: 22px;
 }
 
 .instafox-menu-item svg {
   flex-shrink: 0;
+  color: var(--ifox-orange);
 }
 
 .instafox-menu-item:not(:last-child) {
-  border-bottom: 1px solid #efefef;
+  border-bottom: 1px solid var(--ifox-gray);
 }
 
 /* Old button styles (kept for compatibility) */
@@ -86,24 +102,25 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 16px;
+  padding: 10px 20px;
   margin: 8px;
-  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  background: var(--ifox-orange);
   color: white;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
   font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: var(--ifox-transition);
+  box-shadow: 0 4px 12px rgba(255, 127, 17, 0.3);
   position: relative;
   z-index: 100;
 }
 
 .instafox-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 6px 16px rgba(255, 127, 17, 0.4);
+  background: #ff8c2e;
 }
 
 .instafox-btn svg {
@@ -118,7 +135,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(8, 15, 15, 0.95);
+  backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -132,15 +150,17 @@
 }
 
 .instafox-modal-content {
-  background: white;
-  border-radius: 12px;
+  background: var(--ifox-dark);
+  border: 2px solid var(--ifox-gray);
+  border-radius: 16px;
   width: 90%;
   max-width: 600px;
   max-height: 90vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  animation: slideUp 0.3s ease;
+  animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
 }
 
 @keyframes slideUp {
@@ -158,74 +178,80 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
-  border-bottom: 1px solid #dbdbdb;
+  padding: 20px 24px;
+  border-bottom: 2px solid var(--ifox-gray);
+  background: var(--ifox-dark-lighter);
 }
 
 .instafox-modal-header h2 {
   margin: 0;
   font-size: 20px;
   font-weight: 600;
-  color: #262626;
+  color: white;
+  letter-spacing: -0.3px;
 }
 
 .instafox-close-btn {
-  background: none;
-  border: none;
-  font-size: 32px;
+  background: transparent;
+  border: 2px solid var(--ifox-red);
+  font-size: 24px;
   line-height: 1;
-  color: #8e8e8e;
+  color: var(--ifox-red);
   cursor: pointer;
-  padding: 0;
+  padding: 4px;
   width: 32px;
   height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.2s;
+  transition: var(--ifox-transition);
+  border-radius: 8px;
 }
 
 .instafox-close-btn:hover {
-  color: #262626;
+  background: var(--ifox-red);
+  color: white;
+  transform: rotate(90deg);
 }
 
 .instafox-modal-body {
-  padding: 20px;
+  padding: 24px;
   overflow-y: auto;
   flex: 1;
 }
 
 /* Upload Area */
 .instafox-upload-area {
-  border: 2px dashed #dbdbdb;
-  border-radius: 8px;
-  padding: 40px 20px;
+  border: 2px dashed var(--ifox-sage);
+  border-radius: 12px;
+  padding: 48px 24px;
   text-align: center;
   cursor: pointer;
-  transition: all 0.3s ease;
-  background: #fafafa;
+  transition: var(--ifox-transition);
+  background: var(--ifox-dark-lighter);
 }
 
 .instafox-upload-area:hover,
 .instafox-upload-area.drag-over {
-  border-color: #0095f6;
-  background: #f0f8ff;
+  border-color: var(--ifox-orange);
+  background: rgba(255, 127, 17, 0.05);
+  transform: scale(1.01);
 }
 
 .instafox-upload-prompt svg {
-  color: #8e8e8e;
+  color: var(--ifox-orange);
   margin-bottom: 16px;
 }
 
 .instafox-upload-prompt p {
   margin: 8px 0;
-  color: #262626;
+  color: white;
   font-size: 16px;
   font-weight: 600;
 }
 
 .instafox-upload-hint {
-  color: #8e8e8e !important;
+  color: var(--ifox-sage) !important;
   font-size: 14px !important;
   font-weight: 400 !important;
 }
@@ -243,9 +269,10 @@
   position: relative;
   width: 200px;
   height: 200px;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  border: 2px solid var(--ifox-gray);
 }
 
 .instafox-preview-item img,
@@ -259,16 +286,17 @@
   position: absolute;
   top: 8px;
   right: 8px;
-  background: rgba(0, 0, 0, 0.7);
+  background: var(--ifox-orange);
   color: white;
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .instafox-multi-preview .instafox-preview-item {
@@ -283,18 +311,27 @@
 
 .instafox-caption-area textarea {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #dbdbdb;
-  border-radius: 8px;
+  padding: 14px;
+  background: var(--ifox-dark-lighter);
+  border: 2px solid var(--ifox-gray);
+  border-radius: 12px;
   font-size: 14px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   resize: vertical;
   box-sizing: border-box;
+  color: white;
+  transition: var(--ifox-transition);
+  min-height: 80px;
+}
+
+.instafox-caption-area textarea::placeholder {
+  color: var(--ifox-sage);
 }
 
 .instafox-caption-area textarea:focus {
   outline: none;
-  border-color: #0095f6;
+  border-color: var(--ifox-orange);
+  box-shadow: 0 0 0 3px rgba(255, 127, 17, 0.1);
 }
 
 /* Options */
@@ -305,103 +342,180 @@
 .instafox-checkbox-label {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   cursor: pointer;
   user-select: none;
   font-size: 14px;
-  color: #262626;
+  color: var(--ifox-sage);
+  padding: 8px;
+  border-radius: 8px;
+  transition: var(--ifox-transition);
+}
+
+.instafox-checkbox-label:hover {
+  background: var(--ifox-dark-lighter);
+  color: white;
 }
 
 .instafox-checkbox-label input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
-  accent-color: #0095f6;
+  accent-color: var(--ifox-orange);
+  border-radius: 4px;
 }
 
 .instafox-checkbox-label span {
   line-height: 1;
+  font-weight: 500;
 }
 
 /* Actions */
 .instafox-actions {
   display: flex;
   gap: 12px;
-  margin-top: 20px;
+  margin-top: 24px;
   justify-content: flex-end;
 }
 
 .instafox-btn-primary,
 .instafox-btn-secondary {
-  padding: 10px 24px;
+  padding: 12px 28px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--ifox-transition);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .instafox-btn-primary {
-  background: #0095f6;
+  background: var(--ifox-orange);
   color: white;
+  border: 2px solid var(--ifox-orange);
 }
 
 .instafox-btn-primary:hover {
-  background: #0081db;
+  background: #ff8c2e;
+  border-color: #ff8c2e;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 127, 17, 0.4);
+}
+
+.instafox-btn-primary:active {
+  transform: translateY(0);
 }
 
 .instafox-btn-secondary {
-  background: white;
-  color: #262626;
-  border: 1px solid #dbdbdb;
+  background: transparent;
+  color: var(--ifox-sage);
+  border: 2px solid var(--ifox-gray);
 }
 
 .instafox-btn-secondary:hover {
-  background: #fafafa;
+  background: var(--ifox-dark-lighter);
+  color: white;
+  border-color: var(--ifox-sage);
 }
 
-/* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
-  .instafox-modal-content {
-    background: #262626;
-  }
-  
-  .instafox-modal-header {
-    border-bottom-color: #363636;
-  }
-  
-  .instafox-modal-header h2 {
-    color: #fafafa;
-  }
-  
-  .instafox-upload-area {
-    background: #1a1a1a;
-    border-color: #363636;
-  }
-  
-  .instafox-upload-area:hover,
-  .instafox-upload-area.drag-over {
-    background: #2a2a2a;
-  }
-  
-  .instafox-upload-prompt p {
-    color: #fafafa;
-  }
-  
-  .instafox-caption-area textarea {
-    background: #1a1a1a;
-    border-color: #363636;
-    color: #fafafa;
-  }
-  
-  .instafox-btn-secondary {
-    background: #1a1a1a;
-    color: #fafafa;
-    border-color: #363636;
-  }
-  
-  .instafox-btn-secondary:hover {
-    background: #2a2a2a;
-  }
+/* Progress & Loading States */
+.instafox-progress {
+  margin-top: 16px;
+  background: var(--ifox-dark-lighter);
+  border-radius: 8px;
+  height: 8px;
+  overflow: hidden;
+  border: 1px solid var(--ifox-gray);
+}
+
+.instafox-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--ifox-orange) 0%, var(--ifox-red) 100%);
+  transition: width 0.3s ease;
+  box-shadow: 0 0 10px rgba(255, 127, 17, 0.5);
+}
+
+.instafox-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px;
+  color: var(--ifox-sage);
+  font-size: 14px;
+}
+
+.instafox-spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid var(--ifox-gray);
+  border-top-color: var(--ifox-orange);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Status Messages */
+.instafox-status {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.instafox-status.success {
+  background: rgba(76, 175, 80, 0.15);
+  color: #66bb6a;
+  border: 2px solid rgba(76, 175, 80, 0.3);
+}
+
+.instafox-status.error {
+  background: rgba(255, 27, 28, 0.15);
+  color: var(--ifox-red);
+  border: 2px solid rgba(255, 27, 28, 0.3);
+}
+
+.instafox-status.warning {
+  background: rgba(255, 127, 17, 0.15);
+  color: var(--ifox-orange);
+  border: 2px solid rgba(255, 127, 17, 0.3);
+}
+
+/* Scrollbar Styling */
+.instafox-modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.instafox-modal-body::-webkit-scrollbar-track {
+  background: var(--ifox-dark-lighter);
+}
+
+.instafox-modal-body::-webkit-scrollbar-thumb {
+  background: var(--ifox-gray);
+  border-radius: 4px;
+}
+
+.instafox-modal-body::-webkit-scrollbar-thumb:hover {
+  background: var(--ifox-sage);
+}
+
+/* Utility Classes */
+.instafox-hidden {
+  display: none !important;
+}
+
+.instafox-fade-in {
+  animation: fadeIn 0.3s ease;
+}
+
+.instafox-slide-in {
+  animation: slideUp 0.3s ease;
 }
