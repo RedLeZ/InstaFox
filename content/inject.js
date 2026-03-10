@@ -223,6 +223,12 @@ function openStoryModal() {
         <div class="instafox-caption-area">
           <textarea id="story-caption" placeholder="Add a caption..." rows="3"></textarea>
         </div>
+        <div class="instafox-options">
+          <label class="instafox-checkbox-label">
+            <input type="checkbox" id="close-friends-checkbox">
+            <span style="color: white;">Close Friends</span>
+          </label>
+        </div>
         <div class="instafox-actions">
           <button class="instafox-btn-secondary" id="save-draft-btn">Save as Draft</button>
           <button class="instafox-btn-secondary" id="schedule-btn">Schedule</button>
@@ -858,6 +864,11 @@ const InstagramAPI = {
       
       console.log('📦 Media type detected:', isVideo ? 'Video' : 'Image', `(${mimeType})`);
       
+      // Check Close Friends checkbox
+      const closeFriendsCheckbox = document.getElementById('close-friends-checkbox');
+      const isCloseFriends = closeFriendsCheckbox ? closeFriendsCheckbox.checked : false;
+      console.log('👥 Close Friends:', isCloseFriends ? 'Yes' : 'No');
+      
       // Extract media dimensions
       let mediaWidth = 1080;
       let mediaHeight = 1920;
@@ -924,22 +935,25 @@ const InstagramAPI = {
       // Debug: Check cookies
       console.log('🍪 Document.cookie accessible:', document.cookie.split(';').map(c => c.trim().split('=')[0]));
       
-      // Build rupload params
-      const ruploadParamsObj = {
-        media_type: isVideo ? 2 : 1, // 1 = image, 2 = video
+      // Build rupload params (Inssist-style: no dimensions/duration for videos)
+      const ruploadParamsObj = isVideo ? {
+        client_passthrough: "1",
+        is_sidecar: "0",
+        media_type: 2,
+        upload_id: uploadId,
+        for_album: true,
+        is_unified_video: "0"
+      } : {
+        media_type: 1,
         upload_id: uploadId,
         upload_media_height: mediaHeight,
         upload_media_width: mediaWidth
       };
       
-      // Add video duration if it's a video
-      if (isVideo && videoDuration > 0) {
-        ruploadParamsObj.upload_media_duration_ms = videoDuration * 1000;
-      }
-      
       const ruploadParams = JSON.stringify(ruploadParamsObj);
       
-      const entityName = `fb_uploader_${uploadId}`;
+      // Use story_* naming format (Inssist approach)
+      const entityName = `story_${uploadId}`;
       // Use different endpoint for videos vs images
       const ruploadEndpoint = isVideo ? 'rupload_igvideo' : 'rupload_igphoto';
       const ruploadUrl = `https://i.instagram.com/${ruploadEndpoint}/${entityName}`;
@@ -1033,19 +1047,17 @@ const InstagramAPI = {
             dimensions: `${mediaWidth}x${mediaHeight}` 
           });
           
-          // Wait 1ms to ensure different upload_id timestamp
-          await new Promise(resolve => setTimeout(resolve, 1));
-          
-          // Upload thumbnail with a separate upload_id
-          coverUploadId = Date.now().toString(); // Generate new upload_id for cover
-          const coverEntityName = `fb_uploader_${coverUploadId}`;
+          // Use SAME upload_id for cover (Inssist approach)
+          coverUploadId = uploadId;
+          const coverEntityName = `story_${uploadId}`;
           const coverRuploadUrl = `https://i.instagram.com/rupload_igphoto/${coverEntityName}`;
           
+          // Use media_type:2 (video) for cover photo (Inssist approach)
           const coverRuploadParams = JSON.stringify({
-            media_type: 1, // Image
-            upload_id: coverUploadId,
-            upload_media_height: mediaHeight,
-            upload_media_width: mediaWidth
+            upload_id: uploadId,
+            media_type: 2,  // Keep as video type!
+            upload_media_width: mediaWidth,
+            upload_media_height: mediaHeight
           });
           
           console.log('📤 Uploading cover with upload_id:', coverUploadId);
@@ -1103,6 +1115,7 @@ const InstagramAPI = {
         upload_id: uploadId,
         caption: caption || '',
         configure_mode: '1',
+        ...(isCloseFriends && { audience: 'besties' }), // Close Friends mode
         share_to_facebook: '', // Empty string, not 'true'
         share_to_fb_destination_id: fbDestinationId,
         share_to_fb_destination_type: 'USER',

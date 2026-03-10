@@ -1,43 +1,7 @@
 /**
  * InstaFox Background Service Worker
- * Handles user agent spoofing, Instagram API calls, and scheduling
+ * Handles Instagram API calls and scheduling
  */
-
-// Mobile user agent strings for spoofing
-const MOBILE_USER_AGENTS = {
-  ios: 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1',
-  android: 'Mozilla/5.0 (Linux; Android 13; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36'
-};
-
-// Default to iOS user agent
-const ACTIVE_USER_AGENT = MOBILE_USER_AGENTS.ios;
-
-/**
- * Modify request headers to spoof mobile user agent
- */
-browser.webRequest.onBeforeSendHeaders.addListener(
-  (details) => {
-    const headers = details.requestHeaders;
-    
-    // Find and replace the User-Agent header
-    for (let i = 0; i < headers.length; i++) {
-      if (headers[i].name.toLowerCase() === 'user-agent') {
-        headers[i].value = ACTIVE_USER_AGENT;
-        break;
-      }
-    }
-    
-    // Add mobile-specific headers that Instagram might check
-    headers.push({
-      name: 'sec-ch-ua-mobile',
-      value: '?1'
-    });
-    
-    return { requestHeaders: headers };
-  },
-  { urls: ['*://*.instagram.com/*'] },
-  ['blocking', 'requestHeaders']
-);
 
 /**
  * Listen for messages from content scripts

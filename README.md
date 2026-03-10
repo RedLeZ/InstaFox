@@ -14,9 +14,14 @@
 
 ---
 
+## Why Was It Made
+
+I've always had issues with Instagram on desktop, and as a Firefox user who doesn't use phones, I found that Inssist has a paywall for mundane features I need. So I took it into my own hands to create this extension for Firefox users (and maybe Chromium users if I finish this one). It will be free and open source forever.
+
 ## ✨ Features
 
-- **📸 Story Posting** - Upload images directly to Instagram Stories from desktop (only images for now)
+- **📸 Image Stories** - Upload images directly to Instagram Stories from desktop
+- **🎥 Video Stories** - Post video stories with automatic thumbnail generation
 - **🖼️ Native Integration** - Seamlessly integrated into Instagram's interface
 - **🔐 Secure** - Uses Instagram's official API endpoints with proper authentication
 - **⚡ Fast & Lightweight** - Minimal footprint, maximum performance
@@ -46,8 +51,8 @@
 
 1. Click the **InstaFox button** (🦊) in the top-right corner on Instagram
 2. Select **"Story"** from the dropdown menu
-3. Choose your image
-4. Add a caption (optional (not tested :')))
+3. Choose your image or video
+4. Add a caption (optional)
 5. Click **"Publish"** - Done! ✅
 
 ## 📋 Requirements
@@ -98,10 +103,13 @@ This extension uses Instagram's internal web API endpoints. While it mimics the 
 ## 🐛 Known Issues
 
 - Extension must be reloaded after Firefox restarts (unsigned extension limitation)
-- Video stories require manual thumbnail generation (working as intended)
+- Video thumbnails are auto-generated from the first frame
 
 ## 🗺️ Roadmap
 
+- [x] Image story support
+- [x] Video story support
+- [ ] Close friends sharing
 - [ ] Firefox Add-ons store submission
 - [ ] Scheduled post support
 - [ ] Draft saving functionality
@@ -157,33 +165,12 @@ Click the extension icon in the toolbar to:
 
 ## Important Notes
 
-### ⚠️ API Integration Required
+### 📸 Supported Content
 
-**The extension currently has placeholder API functions.** To make it fully functional, you need to:
-
-1. **Reverse-engineer Instagram's API:**
-   - Open Firefox DevTools (F12)
-   - Switch to responsive design mode (Ctrl+Shift+M / Cmd+Shift+M)
-   - Select a mobile device (iPhone or Android)
-   - Go through the process of posting a story manually
-   - In the Network tab, find the API request for story upload
-   - Document:
-     - Endpoint URL
-     - Request method (POST/PUT)
-     - Required headers (X-CSRFToken, X-Instagram-AJAX, etc.)
-     - Payload format (FormData structure)
-     - Response format
-
-2. **Update `utils/instagram-api.js`:**
-   - Replace the `throw new Error()` lines in `uploadStory()` and `uploadPost()`
-   - Implement actual API calls using the documented endpoint
-   - Handle CSRF token extraction
-   - Parse and return Instagram's response
-
-3. **Test thoroughly:**
-   - Instagram may rate-limit or block automated requests
-   - Use realistic delays between actions
-   - Ensure proper error handling
+- **Images**: JPEG, PNG, WebP formats
+- **Videos**: MP4 format with automatic cover generation
+- **Caption**: Optional text caption for stories
+- **Close Friends**: Share exclusively with your close friends list
 
 ### 🔒 Privacy & Security
 
@@ -206,10 +193,11 @@ Click the extension icon in the toolbar to:
 InstaFox/
 ├── manifest.json              # Extension configuration
 ├── background/
-│   └── service-worker.js      # User agent spoofing, API calls, scheduling
+│   └── service-worker.js      # Background tasks, scheduling, analytics
 ├── content/
-│   ├── inject.js              # UI injection into Instagram
-│   └── styles.css             # Styles for injected elements
+│   ├── inject.js              # UI injection and Instagram API interaction
+│   ├── content.js             # Content script bridge
+│   └── styles.css             # UI styling
 ├── ui/
 │   ├── popup.html             # Extension icon popup
 │   └── popup.js               # Popup logic
@@ -221,25 +209,25 @@ InstaFox/
 
 ### How It Works
 
-1. **User Agent Spoofing**: The background script intercepts all requests to Instagram and replaces the User-Agent header with a mobile device string
-2. **UI Injection**: The content script detects Instagram's interface and injects "Create Story" and "Create Post" buttons
-3. **File Handling**: When you upload files, they're converted to base64 and sent to the background script
-4. **API Calls**: The background script communicates with Instagram's private API (needs implementation)
+1. **UI Injection**: The content script detects Instagram's interface and injects the InstaFox button and story creation modal
+2. **File Handling**: When you upload files, they're processed locally in your browser
+3. **Direct API Calls**: Communicates directly with Instagram's rupload API endpoints using your existing session
+4. **Local Storage**: Drafts and analytics are stored in browser local storage
 5. **Scheduling**: Uses browser.alarms API to trigger posts at scheduled times
 
 ## Development Roadmap
 
 ### ✅ Phase 1: Foundation (COMPLETED)
 - [x] Extension skeleton with Manifest V3
-- [x] User agent spoofing
 - [x] Content script injection
 - [x] Basic UI modals
+- [x] Direct API integration
 
-### 🚧 Phase 2: API Integration (IN PROGRESS)
-- [ ] Reverse-engineer Instagram's story API
-- [ ] Implement actual upload functionality
-- [ ] Add proper error handling
-- [ ] Test with real Instagram account
+### ✅ Phase 2: API Integration (COMPLETED)
+- [x] Reverse-engineer Instagram's story API
+- [x] Implement image upload functionality
+- [x] Implement video upload functionality
+- [x] Error handling and user feedback
 
 ### 📋 Phase 3: Enhanced Features (PLANNED)
 - [ ] Multi-photo carousel support (backend)
